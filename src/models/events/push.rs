@@ -64,6 +64,7 @@ pub enum SlackEventCallbackBody {
     ChannelRename(SlackChannelRenameEvent),
     ChannelUnarchive(SlackChannelUnarchiveEvent),
     TeamJoin(SlackTeamJoinEvent),
+    ReactionAdded(SlackReactionAddedEvent),
 }
 
 #[skip_serializing_none]
@@ -117,6 +118,8 @@ pub enum SlackMessageEventType {
     SlackbotResponse,
     #[serde(rename = "emoji_changed")]
     EmojiChanged,
+    #[serde(rename = "reaction_added")]
+    ReactionAdded,
 }
 
 #[skip_serializing_none]
@@ -139,6 +142,26 @@ pub struct SlackAppMentionEvent {
     pub origin: SlackMessageOrigin,
 }
 
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub struct SlackReactionAddedEvent {
+    pub user: SlackUserId,
+    pub reaction: String,
+    pub item: ReactionItem,
+    pub event_ts: SlackTs,
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub enum ReactionItem {
+    #[serde(rename = "message")]
+    MessageItem(MessageItemBody),
+}
+#[skip_serializing_none]
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize, Builder)]
+pub struct MessageItemBody {
+    // pub type: String,
+    pub channel: SlackChannelId,
+    pub ts: SlackTs,
+}
 type SlackMessageEventEdited = SlackMessageEdited;
 
 #[skip_serializing_none]
