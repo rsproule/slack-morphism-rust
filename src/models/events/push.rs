@@ -142,6 +142,7 @@ pub struct SlackAppMentionEvent {
     pub origin: SlackMessageOrigin,
 }
 
+#[skip_serializing_none]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct SlackReactionAddedEvent {
     pub user: SlackUserId,
@@ -151,6 +152,7 @@ pub struct SlackReactionAddedEvent {
 }
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum ReactionItem {
     #[serde(rename = "message")]
     MessageItem(MessageItemBody),
